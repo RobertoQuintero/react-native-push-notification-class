@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <Firebase.h>
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -27,9 +28,13 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#if DEBUG
-  InitializeFlipper(application);
-#endif
+  if ([FIRApp defaultApp] == nil) {
+    [FIRApp configure];
+  }
+  
+  #if DEBUG
+    InitializeFlipper(application);
+  #endif
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
