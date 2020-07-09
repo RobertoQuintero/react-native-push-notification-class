@@ -81,6 +81,23 @@ export default () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    const saveTokenToDatabase = (token) => {
+      // a user can have multiple tokens (multiple devices)
+      console.log(token);
+    };
+
+    messaging()
+      .getToken()
+      .then((token) => {
+        return saveTokenToDatabase(token);
+      });
+
+    return messaging().onTokenRefresh((token) => {
+      saveTokenToDatabase(token);
+    });
+  }, []);
+
   return (
     <NavigationContainer
       linking={{
